@@ -1,0 +1,28 @@
+---
+# <prometheus_label>: <AWS Tag> mapping to expose
+# additional tags from EBS snapshot as labels
+exported_tags: {}
+  # name: Name
+
+# List of targets to scrape snapshots information
+# Can be used to collect metrics from different
+# regions/account in same exporter
+targets:
+  us_west_1:    # Unique target name
+    filters: [] # Refer to Filter API documentation: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Filter.html.
+      # - name: tag:Backup
+      #   value: daily
+    aws_creds:
+      region: us-west-1 # Required.
+      access_key: ""    # Optional. If blank, the environment variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are used.
+      secret_key: ""    # Optional. If blank, the environment variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are used.
+      role_arn: ""      # Optional. Role ARN is to "assume" another role than the one specified by a normal user
+  us_east_1:    # Unique target name
+    filters: [] # Refer to Filter API documentation: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Filter.html.
+      # - name: tag:Environment
+      #   value: prod
+    aws_creds:
+      region: us-east-1 # Required.
+      access_key: ""    # Optional. If blank, the environment variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are used.
+      secret_key: ""    # Optional. If blank, the environment variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are used.
+      role_arn: ""      # Optional. Role ARN is to "assume" another role than the one specified by a normal user
