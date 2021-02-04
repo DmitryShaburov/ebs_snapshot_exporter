@@ -5,10 +5,10 @@ builds:
       - linux
 
 dockers:
-  image_templates:
-    - "dshaburov/{{ .ProjectName }}:latest"
-    - "dshaburov/{{ .ProjectName }}:{{ .Tag }}"
-    - "dshaburov/{{ .ProjectName }}:v{{ .Major }}"
-    - "dshaburov/{{ .ProjectName }}:v{{ .Major }}.{{ .Minor }}"
-  extra_files:
-    - config.yaml
+  - image_templates:
+      - "dshaburov/{{ .ProjectName }}:latest"
+      - "dshaburov/{{ .ProjectName }}:{{ .Tag }}"
+      - "dshaburov/{{ .ProjectName }}:v{{ .Major }}"
+      - "dshaburov/{{ .ProjectName }}:v{{ .Major }}.{{ .Minor }}"
+    extra_files:
+      - config.yaml
