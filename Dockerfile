@@ -1,17 +1,10 @@
-FROM golang:1.15.7-buster AS build
-WORKDIR /src
-COPY go.mod go.sum ./
-RUN go mod download
-COPY ebs_snapshot_exporter.go ebs_snapshot_exporter.go
-RUN go build .
+FROM alpine:3.6 as alpine
+RUN apk add -U --no-cache ca-certificates
 
-FROM debian:buster-20210111-slim as app
-RUN apt-get update \
-    && apt-get -y install ca-certificates \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+FROM scratch
 USER 59000:59000
+WORKDIR /
+COPY --from=alpine /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY config.yaml /etc/ebs_snapshot_exporter/config.yaml
-COPY --from=build /src/ebs_snapshot_exporter /ebs_snapshot_exporter
-EXPOSE 9608
+COPY ebs_snapshot_exporter /ebs_snapshot_exporter
 CMD ["/ebs_snapshot_exporter", "--config.file", "/etc/ebs_snapshot_exporter/config.yaml"]
