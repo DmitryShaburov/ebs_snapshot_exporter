@@ -1,8 +1,8 @@
 builds:
-  goos:
-    - windows
-    - darwin
-    - linux
+  - goos:
+      - windows
+      - darwin
+      - linux
 
 docker:
   image_templates:
