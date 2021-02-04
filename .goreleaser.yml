@@ -4,7 +4,7 @@ builds:
       - darwin
       - linux
 
-docker:
+dockers:
   image_templates:
     - "dshaburov/{{ .ProjectName }}:latest"
     - "dshaburov/{{ .ProjectName }}:{{ .Tag }}"
