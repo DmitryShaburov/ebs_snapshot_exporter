@@ -3,12 +3,12 @@ builds:
       - windows
       - darwin
       - linux
+    env:
+      - CGO_ENABLED=0
 
 dockers:
   - image_templates:
-      - "dshaburov/{{ .ProjectName }}:latest"
-      - "dshaburov/{{ .ProjectName }}:{{ .Tag }}"
-      - "dshaburov/{{ .ProjectName }}:v{{ .Major }}"
-      - "dshaburov/{{ .ProjectName }}:v{{ .Major }}.{{ .Minor }}"
+      - "dshaburov/ebs-snapshot-exporter:latest"
+      - "dshaburov/ebs-snapshot-exporter:{{ .Tag }}"
     extra_files:
       - config.yaml
