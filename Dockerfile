@@ -9,4 +9,4 @@ COPY --from=alpine /passwd.nobody /etc/passwd
 COPY config.yaml /etc/ebs_snapshot_exporter/config.yaml
 COPY ebs_snapshot_exporter /ebs_snapshot_exporter
 USER nobody
-CMD ["/ebs_snapshot_exporter", "--config.file", "/etc/ebs_snapshot_exporter/config.yaml"]
+CMD ["/ebs_snapshot_exporter"]

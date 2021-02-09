@@ -192,7 +192,7 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 // Entrypoint
 func main() {
 	var (
-		configFile    = kingpin.Flag("config.file", "EBS snapshot exporter configuration file.").Default("config.yaml").String()
+		configFile    = kingpin.Flag("config.file", "EBS snapshot exporter configuration file.").Default("/etc/ebs_snapshot_exporter/config.yaml").String()
 		configCheck   = kingpin.Flag("config.check", "If true validate the config file and then exit.").Default().Bool()
 		listenAddress = kingpin.Flag("web.listen-address", "The address to listen on for HTTP requests.").Default(":9608").String()
 	)
