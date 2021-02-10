@@ -1,0 +1,23 @@
+apiVersion: v1
+entries:
+  prometheus-ebs-snapshot-exporter:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2021-02-10T14:37:33.872558281Z"
+    description: EBS snapshots metrics exporter for Prometheus
+    digest: 446b4e8e3a6e1cf6f12a4752fce54059b79685fa113c0e031a22b6eb21d55c49
+    home: https://github.com/DmitryShaburov/ebs_snapshot_exporter
+    keywords:
+    - metrics
+    - EBS
+    - AWS
+    - monitoring
+    kubeVersion: '>=1.10.0-0'
+    name: prometheus-ebs-snapshot-exporter
+    sources:
+    - https://github.com/DmitryShaburov/ebs_snapshot_exporter/tree/main/charts/prometheus-ebs-snapshot-exporter
+    type: application
+    urls:
+    - https://github.com/DmitryShaburov/ebs_snapshot_exporter/releases/download/prometheus-ebs-snapshot-exporter-0.1.1/prometheus-ebs-snapshot-exporter-0.1.1.tgz
+    version: 0.1.1
+generated: "2021-02-10T14:37:33.689387963Z"
