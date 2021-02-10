@@ -75,15 +75,15 @@ configExistingSecretName: ""
 secretConfig: false
 config:
   exported_tags: {}
-  targets:
-    us_west_1:
-      filters: []
-      aws_creds:
-        region: us-west-1
-    us_east_1:
-      filters: []
-      aws_creds:
-        region: us-east-1
+  targets: {}
+    # us_west_1:
+    #   filters: []
+    #   aws_creds:
+    #     region: us-west-1
+    # us_east_1:
+    #   filters: []
+    #   aws_creds:
+    #     region: us-east-1
 
 ## dnsPolicy and dnsConfig for Deployments and Daemonsets if you want non-default settings.
 ## These will be passed directly to the PodSpec of same.
