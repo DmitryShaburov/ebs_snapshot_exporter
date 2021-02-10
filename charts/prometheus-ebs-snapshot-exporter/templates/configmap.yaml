@@ -1,0 +1,16 @@
+{{- if and .Values.config (eq .Values.configExistingSecretName "") }}
+---
+apiVersion: v1
+kind: {{ if .Values.secretConfig -}} Secret {{- else -}} ConfigMap {{- end }}
+metadata:
+  name: {{ template "prometheus-ebs-snapshot-exporter.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "prometheus-ebs-snapshot-exporter.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ include "prometheus-ebs-snapshot-exporter.chart" . }}
+{{ if .Values.secretConfig -}} stringData: {{- else -}} data: {{- end }}
+  config.yaml: |
+    ---
+{{ toYaml .Values.config | indent 4 }}
+{{- end }}

@@ -1,0 +1,138 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "prometheus-ebs-snapshot-exporter.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "prometheus-ebs-snapshot-exporter.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ include "prometheus-ebs-snapshot-exporter.chart" . }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "prometheus-ebs-snapshot-exporter.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  strategy:
+{{ toYaml .Values.strategy | indent 4 }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "prometheus-ebs-snapshot-exporter.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        helm.sh/chart: {{ include "prometheus-ebs-snapshot-exporter.chart" . }}
+        {{- if .Values.pod.labels }}
+{{ toYaml .Values.pod.labels | indent 8 }}
+        {{- end }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {{- if .Values.pod.annotations }}
+{{ toYaml .Values.pod.annotations | indent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ template "prometheus-ebs-snapshot-exporter.serviceAccountName" . }}
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}
+    {{- if .Values.affinity }}
+      affinity:
+{{ toYaml .Values.affinity | indent 8 }}
+    {{- end }}
+    {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 6 }}
+    {{- end }}
+    {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+    {{- end }}
+
+      restartPolicy: {{ .Values.restartPolicy }}
+
+      {{- if .Values.priorityClassName }}
+      priorityClassName: "{{ .Values.priorityClassName }}"
+      {{- end }}
+      containers:
+        {{- if .Values.extraContainers }}
+{{ toYaml .Values.extraContainers | indent 8 }}
+        {{- end }}
+        - name: ebs-snapshot-exporter
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          {{- range $key, $value := .Values.extraEnv }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+          {{- end }}
+          args:
+{{- if .Values.config }}
+            - "--config.file=/config/config.yaml"
+{{- else }}
+            - "--config.file=/etc/ebs_snapshot_exporter/config.yaml"
+{{- end }}
+        {{- if .Values.extraArgs }}
+{{ toYaml .Values.extraArgs | indent 12 }}
+        {{- end }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          ports:
+            - containerPort: {{ .Values.containerPort }}
+              name: http
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | trim | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | trim | nindent 12 }}
+          volumeMounts:
+            - mountPath: /config
+              name: config
+          {{- range .Values.extraConfigmapMounts }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+              subPath: {{ .subPath | default "" }}
+              readOnly: {{ .readOnly }}
+          {{- end }}
+          {{- range .Values.extraSecretMounts }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+              subPath: {{ .subPath }}
+              readOnly: {{ .readOnly }}
+          {{- end }}
+{{- if .Values.dnsPolicy }}
+      dnsPolicy: {{ .Values.dnsPolicy | toString }}
+{{- end }}
+{{- if .Values.dnsConfig }}
+      dnsConfig:
+        {{- toYaml .Values.dnsConfig | nindent 8 }}
+{{- end }}
+      volumes:
+    {{- if .Values.extraVolumes }}
+{{ toYaml .Values.extraVolumes | indent 8 }}
+    {{- end }}
+        - name: config
+{{- if .Values.secretConfig }}
+          secret:
+            secretName: {{ template "prometheus-ebs-snapshot-exporter.fullname" . }}
+{{- else if .Values.configExistingSecretName }}
+          secret:
+            secretName: {{ .Values.configExistingSecretName }}
+{{- else }}
+          configMap:
+            name: {{ template "prometheus-ebs-snapshot-exporter.fullname" . }}
+{{- end }}
+      {{- range .Values.extraConfigmapMounts }}
+        - name: {{ .name }}
+          configMap:
+            name: {{ .configMap }}
+            defaultMode: {{ .defaultMode }}
+      {{- end }}
+      {{- range .Values.extraSecretMounts }}
+        - name: {{ .name }}
+          secret:
+            secretName: {{ .secretName }}
+            defaultMode: {{ .defaultMode }}
+      {{- end }}
