@@ -2,6 +2,12 @@
 
 Export AWS EBS Snapshot metrics in Prometheus format.
 
+## Credits
+
+- [mr-karan/ebs-snapshot-exporter](https://github.com/mr-karan/ebs-snapshot-exporter) - for main idea, readme and parts of code
+- [prometheus](https://github.com/prometheus/) - for examples how to write Prometheus exporters
+- [prometheus-community/helm-charts](https://github.com/prometheus-community/helm-charts) - for examples of Helm charts for Prometheus exporters
+
 ## Features
 
 - Ability to add ad-hoc labels in the form of AWS Tags to the exported metrics.
@@ -100,12 +106,12 @@ go build .
 ./ebs_snapshot_exporter --help
 ```
 
-* __`config.file`:__ EBS snapshot exporter configuration file.
-* __`config.check`:__ If true validate the config file and then exit.
-* __`web.listen-address`:__ The address to listen on for HTTP requests.
-* __`log.level`:__ Only log messages with the given severity or above. One of: [debug, info, warn, error]
-* __`log.format`:__ Output format of log messages. One of: [logfmt, json]
-* __`version`:__ Show application version.
+- __`config.file`:__ EBS snapshot exporter configuration file.
+- __`config.check`:__ If true validate the config file and then exit.
+- __`web.listen-address`:__ The address to listen on for HTTP requests.
+- __`log.level`:__ Only log messages with the given severity or above. One of: [debug, info, warn, error]
+- __`log.format`:__ Output format of log messages. One of: [logfmt, json]
+- __`version`:__ Show application version.
 
 ### Configuration options
 
