@@ -161,7 +161,7 @@ Alert when last snapshot was taken more than 2 days ago
 
 ```yaml
 - alert: SnapshotAge
-  expr: time() - max(ebs_snapshot_start_time{state="completed",target="elasticsearch"}) by (name) > 86400 * 2
+  expr: time() - max(ebs_snapshot_start_time{state="completed"}) by (name) > 86400 * 2
   for: 1m
   labels:
     severity: critical
