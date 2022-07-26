@@ -1,8 +1,11 @@
 builds:
   - goos:
-      - windows
-      - darwin
       - linux
+    goarch:
+      - amd64
+      - arm64
+    goarm:
+      - 7
     env:
       - CGO_ENABLED=0
 
@@ -10,5 +13,13 @@ dockers:
   - image_templates:
       - "dshaburov/ebs-snapshot-exporter:latest"
       - "dshaburov/ebs-snapshot-exporter:{{ .Tag }}"
+    extra_files:
+      - config.yaml
+  - goos: linux
+    goarch: arm64
+    goarm: 7
+    image_templates:
+      - "dshaburov/ebs-snapshot-exporter:latest-arm64v7"
+      - "dshaburov/ebs-snapshot-exporter:{{ .Tag }}-arm64v7"
     extra_files:
       - config.yaml

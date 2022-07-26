@@ -6,7 +6,7 @@ restartPolicy: Always
 
 image:
   repository: dshaburov/ebs-snapshot-exporter
-  tag: v0.1.0
+  tag: v0.1.1
   pullPolicy: IfNotPresent
 
   ## Optionally specify an array of imagePullSecrets.
